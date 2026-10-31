@@ -10,24 +10,27 @@ Use the ordinary `tern` CLI to operate Tern workspaces. Choose commands from the
 ## Locate the Window and Targets
 
 1. Use `tern` from PATH. On Windows, use `Get-Command tern` to resolve the executable; the native console entry point is typically `tern.com`.
-2. Before the first operation, run `tern inspect --json` to read session, tab, pane, and window information. Use `tern ls --json` when only a compact layout is needed.
-3. After selecting a window, explicitly pass `--window KEY` to subsequent commands. Take the window key from the client information in `inspect`; the first window's key is an empty string, which must be preserved as an argument.
+2. If the target pane is already supplied or known from a prior command, operate on it directly. Otherwise, start with `tern ls` for a compact list of candidate panes. Use `tern ls --json` only when structured layout data is needed.
+3. Reuse a known window key or the CLI's existing window routing. Pass `--window KEY` when explicitly selecting or pinning a window. Use `tern inspect --json` only when required window keys, client details, or other necessary state are not available from narrower commands. Preserve the first window's empty key as an actual empty argument when selecting it explicitly.
 4. Prefer numeric pane IDs and session IDs. Creation commands return JSON with IDs such as `session`, `tab`, and `block`; reuse those values directly.
 5. If the user has not specified a target and several candidates match, list the candidates and ask. Do not rely on focus remaining unchanged.
 
-Replace `BLOCK`, `SESSION`, `KEY`, `DIR`, and `PATH` below with actual values. Examples omit `--window KEY`; add it when executing commands, before the `--` separator when launching a program. Pass text, paths, and empty strings as complete arguments.
+Replace `BLOCK`, `SESSION`, `KEY`, `DIR`, and `PATH` below with actual values. Examples omit `--window KEY`; add it when explicitly selecting a window, before the `--` separator when launching a program. Pass text, paths, and empty strings as complete arguments.
 
 ## Inspect the Workspace and Processes
 
 ```text
+tern ls
 tern ls --json
 tern inspect --json
 tern process BLOCK --json
 ```
 
-- `ls`: sessions, tabs, panes, and split trees.
+- `ls`: a compact session, tab, and pane listing; add `--json` for structured layout data.
 - `inspect`: detailed pane, directory, program state, and client information.
 - `process`: the target terminal's associated processes, process group, and foreground program.
+
+To check the foreground program in a known pane, call `process` directly. Use `capture` only if terminal text is needed.
 
 When an existing tab's position is needed, read it from the current `ls` result. Do not treat a previously observed position as a permanent identifier.
 
@@ -158,4 +161,4 @@ tern kill session SESSION --json
 - Perform only the operations needed for the request. Reuse IDs from creation results in subsequent commands to avoid duplicate resources.
 - If a target becomes invalid or a command fails, read the relevant state before choosing the next action.
 - Report the target, working directory, and observed results. If a task is still running, accurately describe its current state.
-- Prefer JSON output for queries and layout operations. Do not read the entire terminal history when it is unnecessary.
+- Prefer compact output for discovery and JSON for creation results, structured state, and layout actions. Read only the terminal output needed for the request.

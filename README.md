@@ -56,7 +56,7 @@ Ask your agent to use the `tern-runtime` skill, then describe the workspace oper
 - "Open README.md in a preview block."
 - "Watch for layout changes until I stop the subscription."
 
-The skill resolves window and pane IDs before acting, then reuses the IDs returned by creation commands. See [SKILL.md](SKILL.md) for the full command reference and execution workflow.
+Target discovery is on demand: use known pane IDs directly, start unknown-pane discovery with compact `tern ls`, and request `inspect --json` only when required details are unavailable from narrower commands. Reuse IDs returned by creation commands. See [SKILL.md](SKILL.md) for the full command reference and execution workflow.
 
 ## Repository Layout
 

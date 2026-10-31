@@ -1,4 +1,4 @@
 interface:
   display_name: "Tern Runtime"
   short_description: "Manage Tern panes, tabs, terminal input and output via CLI"
-  default_prompt: "Use $tern-runtime to inspect my Tern workspace and carry out the requested session, pane, terminal, program-launch, or file-opening operations through the ordinary tern CLI."
+  default_prompt: "Use $tern-runtime to carry out the requested Tern session, pane, terminal, program-launch, or file-opening operations through the ordinary CLI, resolving targets only when needed."
